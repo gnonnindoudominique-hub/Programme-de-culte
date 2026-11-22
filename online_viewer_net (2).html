@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PROGRAMME DE CULTE PAROISSE JESOUDEGBE D'ABOUABOUT PORT BOUET GONZAGUVILLE</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial;background:#f0fdfa;margin:0}
+.top{background:#0f766e;color:#fff;padding:22px 14px;text-align:center}
+.top h1{margin:0;font-size:22px}
+.top p{margin:6px 0 0;color:#ccfbf1;font-size:14px;font-weight:bold}
+.top .sub{color:#fde047;font-weight:900;font-size:15px;margin-top:8px}
+.top .tel{color:#fff;font-weight:900;font-size:15px;margin-top:8px;background:rgba(0,0,0,0.2);display:inline-block;padding:5px 12px;border-radius:20px}
+.wrap{padding:12px}.box{background:#fff;padding:15px;border-radius:14px;margin-bottom:12px}
+input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd5e1;border-radius:9px;font-size:15px}
+button{width:100%;padding:13px;border:none;border-radius:9px;font-weight:bold;font-size:16px;cursor:pointer}
+.save{background:#16a34a;color:#fff}
+.prog{background:#fff;border-left:6px solid #0f766e;padding:12px;border-radius:12px;margin:10px 0}
+.badge{display:inline-block;padding:8px 16px;border-radius:20px;font-size:15px;font-weight:900;color:#fff;background:#2563eb}
+.detail{background:#f8fafc;padding:10px;border-radius:10px;margin-top:8px;font-size:14px;line-height:1.7;display:none}
+.btns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.btns button,.btns a{flex:1;text-align:center;padding:10px 4px;font-size:13px;border-radius:8px;font-weight:bold;text-decoration:none;color:#fff;display:block;border:none;cursor:pointer}
+.wa{background:#25D366}.sms{background:#7c3aed}.print{background:#0f766e}.edit{background:#f59e0b;color:#000}.del{background:#fee2e2;color:#b91c1c}.copy{background:#2563eb}
+.cache{display:none}.grosTitre{font-size:22px;font-weight:900;text-align:center;margin:6px 0}.centre{text-align:center}
+.culteBtn{padding:14px;font-size:15px;margin-bottom:8px;text-align:left;font-weight:900;background:#2563eb;color:#fff}
+.officielRow{display:flex;gap:6px;align-items:center;background:#f8fafc;padding:8px;border-radius:10px;margin:6px 0}
+.officielRow b{flex:1;font-size:13px}.officielRow select{flex:1.2}.officielRow button{width:auto;padding:9px 10px;font-size:12px;background:#f59e0b;color:#000}
+.lettre{background:#0f766e;color:#fff;padding:5px 10px;border-radius:8px;font-weight:900;margin-top:12px}
+.fideleRow{display:flex;gap:6px;align-items:center;background:#f8fafc;padding:8px;border-radius:10px;margin:6px 0}
+.fideleRow b{flex:1;font-size:14px}.fideleRow button{width:auto;padding:8px 10px;font-size:12px}
+.fideleRow .btnEdit{background:#f59e0b;color:#000}.fideleRow .btnDel{background:#fee2e2;color:#b91c1c}
+</style></head>
+<body>
+<div class="top"><h1>⛪ PROGRAMME DE CULTE</h1><p>PAROISSE JESOUDEGBE D'ABOUABOUT</p><p class="sub">PORT BOUET GONZAGUVILLE</p><p class="tel">📞 TEL : 225 01 72 82 00 46</p></div>
+<div class="wrap">
+
+<div class="box"><b>👥 FIDELES - <span id="nbFideles">0</span> fideles - Ordre alphabetique A - Z</b><br><br>
+<button onclick="toggleAjout()" id="btnAjout" style="background:#16a34a;color:#fff">➕ AJOUTER DES FIDELES - Appuie ici</button>
+<div id="boxAjout" class="cache" style="margin-top:10px;border:2px dashed #16a34a;padding:12px;border-radius:12px">
+<b>1. Ajouter 1 fidele :</b><input id="nouveauNom" placeholder="Nom ex: Samuel HIUSSINOU"><input id="nouveauTel" placeholder="Tel 0700000000"><button class="save" onclick="ajouterNom()">✅ AJOUTER 1 FIDELE</button><br><br>
+<b>2. Ajouter BEAUCOUP d'un coup :</b><p style="font-size:12px;color:#64748b">Colle tous les noms, 1 par ligne</p><textarea id="nomsEnMasse" rows="5" placeholder="Jean KOUASSI&#10;Marie ADJO&#10;Paul GBENOU"></textarea><button class="save" onclick="ajouterEnMasse()" style="background:#2563eb">✅ AJOUTER TOUTE LA LISTE D'UN COUP</button>
+<button onclick="toggleAjout()" style="background:#e2e8f0;color:#000;margin-top:6px">❌ CACHER</button></div>
+<p style="font-size:12px;color:#64748b;margin-top:12px">Pour modifier un nom, appuie sur ✏️ Modifier. Pour supprimer, appuie sur 🗑️.</p>
+<input id="rechFidele" placeholder="🔍 Chercher un fidele... Ex: Sam" oninput="renderFideles()">
+<div id="listeFideles"></div>
+</div>
+
+<div class="box"><b>🛐 1. CHOISIS LE CULTE</b><br><br><button onclick="toggleCultes()" id="btnCultes" style="background:#0f766e;color:#fff">📋 VOIR TOUS LES CULTES</button><div id="boxCultes" class="cache" style="margin-top:10px"><div id="listeCultesBtns"></div></div></div>
+
+<div class="box"><b>👥 2. OFFICIERS - Pour remplacer</b><br><br><button onclick="toggleOff()" id="btnOff" style="background:#f59e0b;color:#000">👥 VOIR LES OFFICIERS</button><div id="boxOff" class="cache" style="margin-top:10px"><div id="listeOfficiers"></div></div></div>
+
+<div class="box" id="formBox" style="display:none"><b id="formTitle">Nouveau Programme</b><br><br><label>Date</label><input id="date" type="date"><label>Theme</label><input id="theme" placeholder="Ex: Relation entre la mort et le peche"><div id="partCulte"><label>Conducteur</label><input id="conducteur" list="listeNoms"><label>Encensement</label><input id="encensement" list="listeNoms"><label>Priere 1</label><input id="p1" list="listeNoms"><label>Priere 2</label><input id="p2" list="listeNoms"><label>Priere 3</label><input id="p3" list="listeNoms"><label>1er Texte</label><input id="texte1"><label>Lecteur 1</label><input id="lect1" list="listeNoms"><label>2eme Texte</label><input id="texte2"><label>Lecteur 2</label><input id="lect2" list="listeNoms"><label>Predication</label><input id="predication" list="listeNoms"><label>Priere sur Predication</label><input id="prierePred" list="listeNoms"><label>Annonces</label><input id="annonces" list="listeNoms"><label>Quete Homme</label><input id="queteH" list="listeNoms"><label>Quete Femme</label><input id="queteF" list="listeNoms"><label>Priere sur quete</label><input id="priereQuete" list="listeNoms"><label>Action de Grace</label><input id="actionGrace"><label>Priere Cloture</label><input id="priereClot" list="listeNoms"></div><div id="partPriere" style="display:none"><label>Conducteur</label><input id="conducteurP" list="listeNoms"><label>Priere 1</label><input id="p1P" list="listeNoms"><label>Priere 2</label><input id="p2P" list="listeNoms"><label>Priere 3</label><input id="p3P" list="listeNoms"><label>TEXTE</label><input id="texteP"><label>Lecteur</label><input id="lectP" list="listeNoms"><label>Predication</label><input id="predicationP" list="listeNoms"><label>Priere sur Predication</label><input id="prierePredP" list="listeNoms"><label>Annonces</label><input id="annoncesP" list="listeNoms"><label>Quete Homme</label><input id="queteHP" list="listeNoms"><label>Priere sur quete</label><input id="priereQueteP" list="listeNoms"><label>Priere Cloture</label><input id="priereClotP" list="listeNoms"></div><div id="partSpecial" style="display:none"><label>Conducteur</label><input id="conducteurS" list="listeNoms"><label>Personne concernee</label><input id="concerneS"><label>1ere Priere</label><input id="p1S" list="listeNoms"><label>2eme Priere</label><input id="p2S" list="listeNoms"><label>Lecture</label><input id="texteS"><label>Lecteur</label><input id="lectS" list="listeNoms"><label>Predication</label><input id="predicationS" list="listeNoms"><label>Priere sur Predication</label><input id="prierePredS" list="listeNoms"><label>Quete</label><input id="queteS" list="listeNoms"><label>Priere sur quete</label><input id="priereQueteS" list="listeNoms"><label>Cloture</label><input id="priereClotS" list="listeNoms"><label>Details</label><textarea id="detailsS"></textarea></div><label>Note</label><textarea id="note"></textarea><button class="save" onclick="sauver()">✅ ENREGISTRER</button></div>
+
+<div class="box"><b>📋 3. Programmes</b><br><br><input id="rech" placeholder="Rechercher..." oninput="afficher()"><div id="liste"></div></div>
+
+<div class="box" id="boxEditFidele" style="display:none;border:2px solid #f59e0b"><b>✏️ MODIFIER LE NOM DU FIDELE</b><br><br><label>Ancien nom</label><input id="editAncien" disabled><label>Nouveau nom - Corrige ici</label><input id="editNouveau" placeholder="Ex: Samuel HIUSSINOU corrige"><label>Nouveau telephone</label><input id="editTel" placeholder="0700000000"><button class="save" onclick="validerEditFidele()">✅ ENREGISTRER LA CORRECTION</button><button onclick="annulerEditFidele()" style="background:#e2e8f0;color:#000;margin-top:6px">❌ Annuler</button></div>
+
+</div>
+<datalist id="listeNoms"></datalist>
+<script>
+window.onerror=function(m){alert("Erreur: "+m);};
+var CULTES=[
+{id:"dim10",nom:"Culte Dimanche Matin - 10h",jour:"Dimanche 10h",type:"culte"},
+{id:"dim19",nom:"Culte du Soir Dimanche - 19h",jour:"Dimanche 19h",type:"priere"},
+{id:"mer09",nom:"Culte Femmes Steriles - Mercredi 09h",jour:"Mercredi 09h",type:"special"},
+{id:"mer19",nom:"Culte du Soir Mercredi - 19h",jour:"Mercredi 19h",type:"priere"},
+{id:"jeu09",nom:"Culte Femmes Enceintes - Jeudi 09h",jour:"Jeudi 09h",type:"special"},
+{id:"ven13",nom:"Culte Vendredi 13h - Sanctification",jour:"Vendredi 13h",type:"culte"},
+{id:"ven19",nom:"Culte du Soir Vendredi - 19h",jour:"Vendredi 19h",type:"priere"},
+{id:"matin06",nom:"Priere du Matin - 06h",jour:"Tous les jours 06h",type:"priere"},
+{id:"mariage",nom:"Culte de Mariage",jour:"Sur demande",type:"special"},
+{id:"sortie",nom:"Sortie d Enfant",jour:"Sur demande",type:"special"},
+{id:"enterrement",nom:"Enterrement",jour:"Sur demande",type:"special"}
+];
+var OFFICIERS=[
+{poste:"Conducteur",nom:"Vn.Sn.w. Joseph"},
+{poste:"Encensement",nom:"Ev. Dominique GNONNINDOU"},
+{poste:"Priere 1",nom:"Samuel HIUSSINOU"},
+{poste:"Priere 2",nom:"Sn.M. Alice AZONSSI"},
+{poste:"Priere 3",nom:"Ev. Dominique GNONNINDOU"},
+{poste:"Lecteur 1",nom:"Samuel HIUSSINOU"},
+{poste:"Lecteur 2",nom:"Benedicte GBENOU"},
+{poste:"Predication",nom:"Papa"},
+{poste:"Quete Homme",nom:"un papa"},
+{poste:"Quete Femme",nom:"une mama"},
+{poste:"Priere sur quete",nom:"un dev"},
+{poste:"Priere Cloture",nom:"Mn GODONOU Mariette"}
+];
+var MEMBRES=[
+{nom:"Benedicte GBENOU",tel:""},
+{nom:"Ev. Dominique GNONNINDOU",tel:"0173970092"},
+{nom:"Mn GODONOU Mariette",tel:""},
+{nom:"Papa",tel:""},
+{nom:"Samuel HIUSSINOU",tel:""},
+{nom:"Sn.M. Alice AZONSSI",tel:""},
+{nom:"un dev",tel:""},
+{nom:"un papa",tel:""},
+{nom:"une mama",tel:""},
+{nom:"Vn.Sn.w. Joseph",tel:""}
+];
+try{var s=localStorage.getItem("eglise_membres_final"); if(s) MEMBRES=JSON.parse(s);}catch(e){}
+try{var s2=localStorage.getItem("eglise_officiers_final"); if(s2) OFFICIERS=JSON.parse(s2);}catch(e){}
+var data=[]; try{var s3=localStorage.getItem("programme_final"); if(s3) data=JSON.parse(s3);}catch(e){}
+if(data.length===0){data=[{type:"culte",jour:"Dimanche 10h",nomCulte:"Culte Dimanche Matin - 10h",date:"2026-11-22",theme:"Relation entre la mort et le peche",conducteur:"Vn.Sn.w. Joseph",encensement:"Ev. Dominique GNONNINDOU",p1:"Samuel HIUSSINOU",p2:"Sn.M. Alice AZONSSI",p3:"Ev. Dominique GNONNINDOU",texte1:"1 Samuel 25:32-38",lect1:"Samuel HIUSSINOU",texte2:"Romain 1:24-32",lect2:"Benedicte GBENOU",predication:"Papa",prierePred:"",annonces:"",queteH:"un papa",queteF:"une mama",priereQuete:"un dev",actionGrace:"",priereClot:"Mn GODONOU Mariette",note:""}];}
+var culteChoisi=null; var editIndex=-1; var editFideleIndex=-1;
+function triAlpha(){ MEMBRES.sort(function(a,b){ return a.nom.toLowerCase().localeCompare(b.nom.toLowerCase()); }); }
+function toggleAjout(){var b=document.getElementById("boxAjout"); if(b.classList.contains("cache")){b.classList.remove("cache"); document.getElementById("btnAjout").innerText="➖ CACHER - AJOUTER DES FIDELES";}else{b.classList.add("cache"); document.getElementById("btnAjout").innerText="➕ AJOUTER DES FIDELES - Appuie ici";}}
+function toggleCultes(){var b=document.getElementById("boxCultes"); if(b.classList.contains("cache")){b.classList.remove("cache"); renderCultes();}else{b.classList.add("cache");}}
+function toggleOff(){var b=document.getElementById("boxOff"); if(b.classList.contains("cache")){b.classList.remove("cache"); renderOff();}else{b.classList.add("cache");}}
+function renderCultes(){var h=""; CULTES.forEach(function(c){h+='<button class="culteBtn" onclick="choisirCulte(\''+c.id+'\')">'+c.nom+'</button>';}); document.getElementById("listeCultesBtns").innerHTML=h;}
+function choisirCulte(id){var c=null; for(var i=0;i<CULTES.length;i++){if(CULTES[i].id===id) c=CULTES[i];} if(!c) return; culteChoisi=c; document.getElementById("formBox").style.display="block"; document.getElementById("formTitle").innerText="➕ "+c.nom; document.getElementById("partCulte").style.display=c.type==="culte"?"block":"none"; document.getElementById("partPriere").style.display=c.type==="priere"?"block":"none"; document.getElementById("partSpecial").style.display=c.type==="special"?"block":"none"; remplir(); document.getElementById("date").value=new Date().toISOString().slice(0,10); document.getElementById("boxCultes").classList.add("cache"); window.scrollTo(0,0);}
+function getOff(poste){for(var i=0;i<OFFICIERS.length;i++){if(OFFICIERS[i].poste===poste) return OFFICIERS[i].nom;} return "";}
+function setVal(id,v){var e=document.getElementById(id); if(e) e.value=v||"";}
+function getVal(id){var e=document.getElementById(id); return e?e.value.trim():"";}
+function remplir(){setVal("conducteur",getOff("Conducteur")); setVal("conducteurP",getOff("Conducteur")); setVal("conducteurS",getOff("Conducteur")); setVal("encensement",getOff("Encensement")); setVal("p1",getOff("Priere 1")); setVal("p1P",getOff("Priere 1")); setVal("p2",getOff("Priere 2")); setVal("p2P",getOff("Priere 2")); setVal("p3",getOff("Priere 3")); setVal("p3P",getOff("Priere 3")); setVal("lect1",getOff("Lecteur 1")); setVal("lectP",getOff("Lecteur 1")); setVal("lect2",getOff("Lecteur 2")); setVal("predication",getOff("Predication")); setVal("predicationP",getOff("Predication")); setVal("queteH",getOff("Quete Homme")); setVal("queteHP",getOff("Quete Homme")); setVal("queteF",getOff("Quete Femme")); setVal("priereQuete",getOff("Priere sur quete")); setVal("priereQueteP",getOff("Priere sur quete")); setVal("priereClot",getOff("Priere Cloture")); setVal("priereClotP",getOff("Priere Cloture"));}
+function ajouterNom(){var nom=getVal("nouveauNom"); var tel=getVal("nouveauTel"); if(!nom){alert("Mets le nom"); return;} var existe=false; for(var i=0;i<MEMBRES.length;i++){if(MEMBRES[i].nom.toLowerCase()===nom.toLowerCase()) existe=true;} if(!existe){MEMBRES.push({nom:nom,tel:tel}); triAlpha(); localStorage.setItem("eglise_membres_final",JSON.stringify(MEMBRES));} setVal("nouveauNom",""); setVal("nouveauTel",""); renderFideles(); renderOff(); alert("Fidele ajoute: "+nom);}
+function ajouterEnMasse(){var txt=document.getElementById("nomsEnMasse").value; if(!txt.trim()){alert("Colle d abord les noms"); return;} var lignes=txt.split("\n"); var ajoutes=0; lignes.forEach(function(l){var nom=l.trim(); if(nom.length<2) return; var existe=false; for(var i=0;i<MEMBRES.length;i++){if(MEMBRES[i].nom.toLowerCase()===nom.toLowerCase()) existe=true;} if(!existe){MEMBRES.push({nom:nom,tel:""}); ajoutes++;}}); triAlpha(); localStorage.setItem("eglise_membres_final",JSON.stringify(MEMBRES)); document.getElementById("nomsEnMasse").value=""; renderFideles(); renderOff(); alert(ajoutes+" fideles ajoutes !");}
+function renderFideles(){triAlpha(); var rech=(document.getElementById("rechFidele").value||"").toLowerCase(); var h=""; var lettre=""; MEMBRES.forEach(function(m,i){if(rech && m.nom.toLowerCase().indexOf(rech)<0) return; var L=m.nom.charAt(0).toUpperCase(); if(L!==lettre){lettre=L; h+='<div class="lettre">'+lettre+'</div>';} h+='<div class="fideleRow"><b>'+m.nom+' '+(m.tel?'<span style="color:#64748b;font-weight:normal">- '+m.tel+'</span>':'')+'</b><button class="btnEdit" onclick="ouvrirEditFidele('+i+')">✏️ Modifier</button><button class="btnDel" onclick="suppMembre('+i+')">🗑️</button></div>';}); document.getElementById("listeFideles").innerHTML=h||"Aucun fidele"; document.getElementById("nbFideles").innerText=MEMBRES.length; var dl=document.getElementById("listeNoms"); dl.innerHTML=""; MEMBRES.forEach(function(m){var o=document.createElement("option"); o.value=m.nom; dl.appendChild(o);});}
+function ouvrirEditFidele(i){editFideleIndex=i; var m=MEMBRES[i]; document.getElementById("boxEditFidele").style.display="block"; document.getElementById("editAncien").value=m.nom; document.getElementById("editNouveau").value=m.nom; document.getElementById("editTel").value=m.tel||""; document.getElementById("boxEditFidele").scrollIntoView();}
+function validerEditFidele(){if(editFideleIndex<0) return; var nouveau=getVal("editNouveau"); var tel=getVal("editTel"); if(!nouveau){alert("Mets le nouveau nom"); return;} var ancien=MEMBRES[editFideleIndex].nom; MEMBRES[editFideleIndex].nom=nouveau; MEMBRES[editFideleIndex].tel=tel; for(var i=0;i<OFFICIERS.length;i++){if(OFFICIERS[i].nom===ancien) OFFICIERS[i].nom=nouveau;} triAlpha(); localStorage.setItem("eglise_membres_final",JSON.stringify(MEMBRES)); localStorage.setItem("eglise_officiers_final",JSON.stringify(OFFICIERS)); editFideleIndex=-1; document.getElementById("boxEditFidele").style.display="none"; renderFideles(); renderOff(); alert("Corrige : "+ancien+" -> "+nouveau);}
+function annulerEditFidele(){editFideleIndex=-1; document.getElementById("boxEditFidele").style.display="none";}
+function suppMembre(i){if(confirm("Supprimer "+MEMBRES[i].nom+" ?")){MEMBRES.splice(i,1); localStorage.setItem("eglise_membres_final",JSON.stringify(MEMBRES)); renderFideles(); renderOff();}}
+function renderOff(){triAlpha(); var h=""; OFFICIERS.forEach(function(o,i){h+='<div class="officielRow"><b>'+o.poste+'</b><select id="off-'+i+'">'; MEMBRES.forEach(function(m){h+='<option value="'+m.nom+'" '+(m.nom===o.nom?"selected":"")+'>'+m.nom+'</option>';}); h+='<option value="">-- Vide --</option></select><button onclick="remplacer('+i+')">Remplacer</button></div>';}); document.getElementById("listeOfficiers").innerHTML=h;}
+function remplacer(i){var sel=document.getElementById("off-"+i); OFFICIERS[i].nom=sel.value; localStorage.setItem("eglise_officiers_final",JSON.stringify(OFFICIERS)); renderOff(); alert("Remplace: "+OFFICIERS[i].poste+" = "+sel.value);}
+function sauver(){if(!culteChoisi){alert("Choisis d abord un culte en haut"); return;} var theme=getVal("theme"); if(!theme){alert("Mets le theme"); return;} var o={type:culteChoisi.type,jour:culteChoisi.jour,nomCulte:culteChoisi.nom,date:getVal("date"),theme:theme,conducteur:getVal("conducteur"),encensement:getVal("encensement"),p1:getVal("p1"),p2:getVal("p2"),p3:getVal("p3"),texte1:getVal("texte1"),lect1:getVal("lect1"),texte2:getVal("texte2"),lect2:getVal("lect2"),predication:getVal("predication"),prierePred:getVal("prierePred"),annonces:getVal("annonces"),queteH:getVal("queteH"),queteF:getVal("queteF"),priereQuete:getVal("priereQuete"),actionGrace:getVal("actionGrace"),priereClot:getVal("priereClot"),conducteurP:getVal("conducteurP"),p1P:getVal("p1P"),p2P:getVal("p2P"),p3P:getVal("p3P"),texteP:getVal("texteP"),lectP:getVal("lectP"),predicationP:getVal("predicationP"),prierePredP:getVal("prierePredP"),annoncesP:getVal("annoncesP"),queteHP:getVal("queteHP"),priereQueteP:getVal("priereQueteP"),priereClotP:getVal("priereClotP"),conducteurS:getVal("conducteurS"),concerneS:getVal("concerneS"),p1S:getVal("p1S"),p2S:getVal("p2S"),texteS:getVal("texteS"),lectS:getVal("lectS"),predicationS:getVal("predicationS"),prierePredS:getVal("prierePredS"),queteS:getVal("queteS"),priereQueteS:getVal("priereQueteS"),priereClotS:getVal("priereClotS"),detailsS:getVal("detailsS"),note:getVal("note")}; if(editIndex>=0){data[editIndex]=o; editIndex=-1;}else{data.unshift(o);} localStorage.setItem("programme_final",JSON.stringify(data)); document.getElementById("formBox").style.display="none"; alert("Enregistre: "+o.nomCulte); afficher();}
+function toggleDetail(i){var d=document.getElementById("detail-"+i); d.style.display=(d.style.display==="block")?"none":"block";}
+function textePartage(c){var t="⛪ PROGRAMME DE CULTE PAROISSE JESOUDEGBE D'ABOUABOUT PORT BOUET GONZAGUVILLE\n📞 TEL : 225 01 72 82 00 46\n"+c.nomCulte+" - "+c.jour+" "+c.date+"\nTheme: "+c.theme+"\n\n"; if(c.type==="priere"){return t+"Conducteur: "+c.conducteurP+"\nPriere: "+c.p1P+", "+c.p2P+", "+c.p3P+"\nTEXTE: "+c.texteP+" Lecteur: "+c.lectP+"\nPredication: "+c.predicationP+"\nQuete: "+c.queteHP+"\nCloture: "+c.priereClotP;} if(c.type==="special"){return t+"Conducteur: "+c.conducteurS+"\nConcerne: "+c.concerneS+"\nLecture: "+c.texteS+"\nPredication: "+c.predicationS+"\nQuete: "+c.queteS;} return t+"Conducteur: "+c.conducteur+"\nEncensement: "+c.encensement+"\nPriere: "+c.p1+", "+c.p2+", "+c.p3+"\n1er: "+c.texte1+" Lecteur: "+c.lect1+"\n2eme: "+c.texte2+" Lecteur: "+c.lect2+"\nPredication: "+c.predication+"\nQuete H: "+c.queteH+" F: "+c.queteF+"\nCloture: "+c.priereClot;}
+function afficher(){var r=(document.getElementById("rech").value||"").toLowerCase(); var html=""; data.forEach(function(c,i){if(!((c.theme+" "+c.nomCulte).toLowerCase().indexOf(r)>=0)) return; var cond=c.type==="priere"?c.conducteurP:c.type==="special"?c.conducteurS:c.conducteur; var det=""; if(c.type==="priere"){det="Conducteur: "+c.conducteurP+"<br>Priere: "+c.p1P+", "+c.p2P+", "+c.p3P+"<br>TEXTE: "+c.texteP+"<br>Predication: "+c.predicationP+"<br>Quete: "+c.queteHP;}else if(c.type==="special"){det="Conducteur: "+c.conducteurS+"<br>Concerne: "+c.concerneS+"<br>Lecture: "+c.texteS+"<br>Predication: "+c.predicationS+"<br>Quete: "+c.queteS;}else{det="Conducteur: "+c.conducteur+"<br>Priere: "+c.p1+", "+c.p2+", "+c.p3+"<br>1er: "+c.texte1+"<br>2eme: "+c.texte2+"<br>Predication: "+c.predication+"<br>Quete: "+c.queteH+" / "+c.queteF;} html+='<div class="prog"><div class="centre"><span class="badge">'+c.nomCulte+'</span></div><div class="grosTitre">'+c.theme+'</div><div class="centre">'+c.date+' - '+cond+'</div><button onclick="toggleDetail('+i+')" style="background:#0f766e;color:#fff;margin-top:10px">👁️ VOIR LE PROGRAMME</button><div class="detail" id="detail-'+i+'">'+det+'<br><br><div class="btns"><a class="wa" href="https://api.whatsapp.com/send?text='+encodeURIComponent(textePartage(c))+'" target="_blank">WhatsApp</a><a class="sms" href="sms:?body='+encodeURIComponent(textePartage(c))+'">SMS</a><button class="print" onclick="window.print()">Imprimer</button></div><div class="btns"><button class="edit" onclick="modifier('+i+')">Modifier</button><button class="copy" onclick="copier('+i+')">Copier</button><button class="del" onclick="supp('+i+')">Supprimer</button></div></div></div>';}); document.getElementById("liste").innerHTML=html||"Aucun programme";}
+function modifier(i){var c=data[i]; editIndex=i; var cc=null; for(var k=0;k<CULTES.length;k++){if(CULTES[k].nom===c.nomCulte) cc=CULTES[k];} culteChoisi=cc||{type:c.type,nom:c.nomCulte,jour:c.jour}; document.getElementById("formBox").style.display="block"; document.getElementById("formTitle").innerText="Modifier: "+c.nomCulte; document.getElementById("partCulte").style.display=c.type==="culte"?"block":"none"; document.getElementById("partPriere").style.display=c.type==="priere"?"block":"none"; document.getElementById("partSpecial").style.display=c.type==="special"?"block":"none"; setVal("date",c.date); setVal("theme",c.theme); var ids=["conducteur","encensement","p1","p2","p3","texte1","lect1","texte2","lect2","predication","prierePred","annonces","queteH","queteF","priereQuete","actionGrace","priereClot","conducteurP","p1P","p2P","p3P","texteP","lectP","predicationP","prierePredP","annoncesP","queteHP","priereQueteP","priereClotP","conducteurS","concerneS","p1S","p2S","texteS","lectS","predicationS","prierePredS","queteS","priereQueteS","priereClotS","detailsS","note"]; ids.forEach(function(id){setVal(id,c[id]);}); window.scrollTo(0,0);}
+function copier(i){var c=data[i]; modifier(i); editIndex=-1; setVal("date",new Date().toISOString().slice(0,10)); alert("Copie - change la date");}
+function supp(i){if(confirm("Supprimer ?")){data.splice(i,1); localStorage.setItem("programme_final",JSON.stringify(data)); afficher();}}
+document.getElementById("date").value=new Date().toISOString().slice(0,10);
+triAlpha(); renderFideles(); renderOff(); afficher();
+</script>
+</body></html>
